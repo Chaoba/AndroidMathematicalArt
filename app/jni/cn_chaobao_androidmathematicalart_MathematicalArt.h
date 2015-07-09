@@ -15,6 +15,7 @@ extern "C" {
 JNIEXPORT jobject JNICALL Java_cn_chaobao_androidmathematicalart_MathematicalArt_jniGetMathematicalArt
   (JNIEnv *, jclass,jstring,jint);
 
+
 #ifdef __cplusplus
 }
 #endif

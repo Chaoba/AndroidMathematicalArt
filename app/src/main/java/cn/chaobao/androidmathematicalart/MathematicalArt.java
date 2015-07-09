@@ -1,5 +1,7 @@
 package cn.chaobao.androidmathematicalart;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Liyanshun on 2015/7/6.
  */
@@ -9,5 +11,5 @@ public class MathematicalArt {
         System.loadLibrary("MathematicalArtLibrary");
     }
 
-    public static  native int jniGetMathematicalArt(String path,int type);
+    public static  native Bitmap jniGetMathematicalArt(String path,int type);
 }
