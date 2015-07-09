@@ -42,10 +42,10 @@ typedef struct
     unsigned char alpha, red, green, blue;
     } ARGB;
 
-int32_t convertArgbToInt(ARGB argb)
+uint32_t convertArgbToInt(ARGB argb)
     {
-    return (argb.alpha) | (argb.red << 24) | (argb.green << 16)
-	    | (argb.blue << 8);
+    return (argb.alpha<< 24) | (argb.red ) | (argb.green << 8)
+	    | (argb.blue << 16);
     }
 
 void convertIntToArgb(uint32_t pixel, ARGB* argb)
@@ -61,11 +61,14 @@ jobject createBitmap(JNIEnv * env,uint32_t* _storedBitmapPixels);
 
 uint32_t pixel_write(int i, int j){
     static unsigned char color[3];
-    color[0] = RD(i,j)&255;
-    color[1] = GR(i,j)&255;
-    color[2] = BL(i,j)&255;
+    unsigned char r=RD(i,j);
+    unsigned char g=GR(i,j);
+    unsigned char b=BL(i,j);
+    color[0] = r&255;
+    color[1] = g&255;
+    color[2] = b&255;
     fwrite(color, 1, 3, fp);
-    ARGB rgb={0x00,color[0],color[1],color[2]};
+    ARGB rgb={0xff,r,g,b};
     return convertArgbToInt(rgb);
 }
 char* jstringTostring(JNIEnv* env, jstring jstr)
@@ -95,7 +98,7 @@ JNIEXPORT jobject JNICALL Java_cn_chaobao_androidmathematicalart_MathematicalArt
     fprintf(fp, "P6\n%d %d\n255\n", DIM, DIM);
     for(int j=0;j<DIM;j++)
         for(int i=0;i<DIM;i++){
-          newBitmapPixels[i*DIM+j]= pixel_write(i,j);
+          newBitmapPixels[j*DIM+i]= pixel_write(i,j);
           }
     fclose(fp);
 
