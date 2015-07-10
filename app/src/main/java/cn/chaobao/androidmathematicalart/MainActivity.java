@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mList = (ListView) findViewById(R.id.list);
-        ImageListAdapter adapter = new ImageListAdapter(this, 30);
+        ImageListAdapter adapter = new ImageListAdapter(this, 8);
         mList.setAdapter(adapter);
 
     }

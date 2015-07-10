@@ -25,7 +25,7 @@ public class ImageListAdapter extends BaseAdapter {
     private static final String TAG = "AccidentTypeAdapter";
     private int mCount;
     private Context mContext;
-    private LruCache<Integer, Bitmap> cache = new LruCache<Integer, Bitmap>(8 * 1024 * 1024) {
+    private LruCache<Integer, Bitmap> cache = new LruCache<Integer, Bitmap>(16 * 1024 * 1024) {
         @Override
         protected void entryRemoved(boolean evicted, Integer key, Bitmap oldValue, Bitmap newValue) {
             super.entryRemoved(evicted, key, oldValue, newValue);
@@ -66,21 +66,16 @@ public class ImageListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Log.i(TAG, "Getview:" + position);
-        final ViewHolder holder;
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = View.inflate(mContext, R.layout.list_item, null);
-            holder.mImg = (ImageView) convertView.findViewById(R.id.img);
-            holder.mTxt = (TextView) convertView.findViewById(R.id.time);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+        final ViewHolder holder = new ViewHolder();
+        convertView = View.inflate(mContext, R.layout.list_item, null);
+        holder.mImg = (ImageView) convertView.findViewById(R.id.img);
+        holder.mTxt = (TextView) convertView.findViewById(R.id.time);
+        convertView.setTag(holder);
+
         Bitmap bm = cache.get(position);
         if (bm != null) {
             Log.i(TAG, "has bitmap");
             holder.mImg.setImageBitmap(bm);
-            holder.mTxt.setText("");
         } else {
             holder.mImg.setImageResource(R.mipmap.ic_launcher);
             Observable observable = Observable.create(new Observable.OnSubscribe<Long>() {

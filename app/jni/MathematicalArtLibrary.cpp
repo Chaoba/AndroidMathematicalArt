@@ -23,20 +23,6 @@ public:
 	_storedBitmapPixels = NULL;
 	}
     };
-
-unsigned char RD(int i,int j){
-    float s=3./(j+99);
-    return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
-}
-unsigned char GR(int i,int j){
-    float s=3./(j+99);
-    return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
-}
-unsigned char BL(int i,int j){
-    float s=3./(j+99);
-    return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
-}
-
 typedef struct
     {
     unsigned char alpha, red, green, blue;
@@ -47,27 +33,153 @@ uint32_t convertArgbToInt(ARGB argb)
     return (argb.alpha<< 24) | (argb.red ) | (argb.green << 8)
 	    | (argb.blue << 16);
     }
-
-void convertIntToArgb(uint32_t pixel, ARGB* argb)
-    {
-    argb->red = ((pixel >> 24) & 0xff);
-    argb->green = ((pixel >> 16) & 0xff);
-    argb->blue = ((pixel >> 8) & 0xff);
-    argb->alpha = (pixel & 0xff);
-    }
-
-FILE *fp;
+unsigned char RD(int i,int j,int type);
+unsigned char GR(int i,int j,int type);
+unsigned char BL(int i,int j,int type);
+//FILE *fp;
 jobject createBitmap(JNIEnv * env,uint32_t* _storedBitmapPixels);
 
-uint32_t pixel_write(int i, int j){
-    static unsigned char color[3];
-    unsigned char r=RD(i,j);
-    unsigned char g=GR(i,j);
-    unsigned char b=BL(i,j);
-    color[0] = r&255;
-    color[1] = g&255;
-    color[2] = b&255;
-    fwrite(color, 1, 3, fp);
+unsigned char RD(int i,int j,int type){
+    switch(type){
+    case 0:
+        {
+            float s=3./(j+99);
+            return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
+        }
+    case 1:
+        {
+            float s=3./(j+99);
+            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM)*35)*s;
+            return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+        }
+    case 2:
+        #define P 6.03
+        {
+            float s=3./(j+250),y=(j+sin((i*i+_sq(j-700)*5)/100./DIM+P)*15)*s;return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+        }
+    case 3:
+        {
+             double a=0,b=0,c,d,n=0;
+             while((c=a*a)+(d=b*b)<4&&n++<880)
+             {b=2*a*b+j*8e-9-.645411;a=c-d+i*8e-9+.356888;}
+             return 255*pow((n-80)/800,3.);
+        }
+    case 4:
+        {
+             return j^j-i^i;
+        }
+    case 5:
+        {
+             return _sq(i*j);
+        }
+    case 6:
+        {
+            return (char)(_sq(cos(atan2(j-512.0,i-512.0)/2))*255);
+        }
+    case 7:
+        {
+          return i*j;
+        }
+    }
+}
+unsigned char GR(int i,int j,int type){
+    switch(type){
+    case 0:
+        {
+            float s=3./(j+99);
+            return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
+        }
+    case 1:
+        {
+            float s=3./(j+99);
+            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM)*35)*s;
+            return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+        }
+    case 2:
+        {
+            float s=3./(j+250);
+            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM+P)*15)*s;
+            return (int(5*((i+DIM)*s+y))%2+int(5*((DIM*2-i)*s+y))%2)*127;
+        }
+    case 3:
+        {
+            double a=0,b=0,c,d,n=0;
+            while((c=a*a)+(d=b*b)<4&&n++<880)
+            {b=2*a*b+j*8e-9-.645411;a=c-d+i*8e-9+.356888;}
+            return 255*pow((n-80)/800,.7);
+        }
+    case 4:
+        {
+             return (i-DIM)^2+(j-DIM)^2;
+        }
+    case 5:
+        {
+             return _sq(i*j);
+        }
+    case 6:
+        {
+            return (char)(_sq(cos(atan2(j-512.0,i-512.0)/2.0-2*acos(-1.0)/3))*255);
+        }
+    case 7:
+        {
+            return i*j;
+        }
+    }
+}
+unsigned char BL(int i,int j,int type){
+    switch(type){
+    case 0:
+        {
+            float s=3./(j+99);
+            return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
+        }
+    case 1:
+        {
+            float s=3./(j+99);
+            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM)*35)*s;
+            return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+        }
+    case 2:
+        {
+            float s=3./(j+250);
+            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM+P)*15)*s;
+            return (int(29*((i+DIM)*s+y))%2+int(29*((DIM*2-i)*s+y))%2)*127;
+        }
+    case 3:
+        {
+            double a=0,b=0,c,d,n=0;
+            while((c=a*a)+(d=b*b)<4&&n++<880)
+            {b=2*a*b+j*8e-9-.645411;a=c-d+i*8e-9+.356888;}
+            return 255*pow((n-80)/800,.5);
+        }
+    case 4:
+        {
+            return i^i-j^j;
+        }
+    case 5:
+        {
+            return _sq(i*j);
+        }
+    case 6:
+        {
+           return (char)(_sq(cos(atan2(j-512.0,i-512.0)/2.0+2*acos(-1.0)/3))*255);
+        }
+    case 7:
+        {
+            return 0;
+        }
+    }
+}
+
+uint32_t pixel_write(int i, int j,int type){
+//    static unsigned char color[3];
+    unsigned char r=RD(i,j,type);
+    unsigned char g=GR(i,j,type);
+    unsigned char b=BL(i,j,type);
+//    color[0] = r&255;
+//    color[1] = g&255;
+//    color[2] = b&255;
+//    fwrite(color, 1, 3, fp);
     ARGB rgb={0xff,r,g,b};
     return convertArgbToInt(rgb);
 }
@@ -92,15 +204,14 @@ char* jstringTostring(JNIEnv* env, jstring jstr)
 }
 JNIEXPORT jobject JNICALL Java_cn_chaobao_androidmathematicalart_MathematicalArt_jniGetMathematicalArt
   (JNIEnv * env, jclass cla, jstring path,jint type){
-  LOGD("jniGetMathematicalArt");
-   uint32_t* newBitmapPixels = new uint32_t[DIM * DIM];
-    fp = fopen(jstringTostring(env,path),"wb");
-    fprintf(fp, "P6\n%d %d\n255\n", DIM, DIM);
+    uint32_t* newBitmapPixels = new uint32_t[DIM * DIM];
+//    fp = fopen(jstringTostring(env,path),"wb");
+//    fprintf(fp, "P6\n%d %d\n255\n", DIM, DIM);
     for(int j=0;j<DIM;j++)
         for(int i=0;i<DIM;i++){
-          newBitmapPixels[j*DIM+i]= pixel_write(i,j);
+          newBitmapPixels[j*DIM+i]= pixel_write(i,j,type);
           }
-    fclose(fp);
+//    fclose(fp);
 
     return createBitmap(env,newBitmapPixels);
   }
