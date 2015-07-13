@@ -4,3 +4,4 @@ Then show them in Android Imageview, so we can see these pictures on Android pho
 
 
 <img src='https://github.com/Chaoba/AndroidMathematicalArt/blob/master/20150709164131.png' width="300px"/>  
+<img src='https://github.com/Chaoba/AndroidMathematicalArt/blob/master/device-201_clip.gif' width="300px"/>  
