@@ -83,7 +83,7 @@ public class ImageListAdapter extends BaseAdapter {
                 public void call(Subscriber<? super Long> subscriber) {
                     long startTime = System.currentTimeMillis();
                     Bitmap bm = MathematicalArt.jniGetMathematicalArt(Environment.getExternalStorageDirectory()
-                            + File.separator + "MathPic.jpg", position);
+                            + File.separator + "MathPic.jpg", getCount()-position-1);
                     cache.put(position, bm);
                     subscriber.onNext(startTime);
                     subscriber.onCompleted();

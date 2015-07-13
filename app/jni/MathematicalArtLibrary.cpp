@@ -59,10 +59,7 @@ unsigned char RD(int i,int j,int type){
         }
     case 3:
         {
-             double a=0,b=0,c,d,n=0;
-             while((c=a*a)+(d=b*b)<4&&n++<880)
-             {b=2*a*b+j*8e-9-.645411;a=c-d+i*8e-9+.356888;}
-             return 255*pow((n-80)/800,3.);
+            return _sq(sqrt(i*1.0)+sqrt(j*1.0));
         }
     case 4:
         {
@@ -70,16 +67,14 @@ unsigned char RD(int i,int j,int type){
         }
     case 5:
         {
-             return _sq(i*j);
+             return _sq((1024-i)*(1024-j)/1024)/1024*2;
         }
     case 6:
         {
             return (char)(_sq(cos(atan2(j-512.0,i-512.0)/2))*255);
         }
     case 7:
-        {
-          return i*j;
-        }
+        return sqrt(_sq(512.0-i)+_sq(512.0-j));
     }
 }
 unsigned char GR(int i,int j,int type){
@@ -103,10 +98,7 @@ unsigned char GR(int i,int j,int type){
         }
     case 3:
         {
-            double a=0,b=0,c,d,n=0;
-            while((c=a*a)+(d=b*b)<4&&n++<880)
-            {b=2*a*b+j*8e-9-.645411;a=c-d+i*8e-9+.356888;}
-            return 255*pow((n-80)/800,.7);
+            return _sq(sqrt(512-i*1.0)+sqrt(512-j*1.0));
         }
     case 4:
         {
@@ -114,7 +106,7 @@ unsigned char GR(int i,int j,int type){
         }
     case 5:
         {
-             return _sq(i*j);
+             return _sq((512-i)*(521-j)/512)/512*2;
         }
     case 6:
         {
@@ -122,7 +114,7 @@ unsigned char GR(int i,int j,int type){
         }
     case 7:
         {
-            return i*j;
+           return sqrt(_sq(1024.0-i)+_sq(1024.0-j));
         }
     }
 }
@@ -147,10 +139,7 @@ unsigned char BL(int i,int j,int type){
         }
     case 3:
         {
-            double a=0,b=0,c,d,n=0;
-            while((c=a*a)+(d=b*b)<4&&n++<880)
-            {b=2*a*b+j*8e-9-.645411;a=c-d+i*8e-9+.356888;}
-            return 255*pow((n-80)/800,.5);
+           return _sq(sqrt(1024.0-i)+sqrt(1024.0-j));
         }
     case 4:
         {
@@ -158,7 +147,7 @@ unsigned char BL(int i,int j,int type){
         }
     case 5:
         {
-            return _sq(i*j);
+            return _sq(i*j/1024)/1024;
         }
     case 6:
         {
@@ -166,7 +155,7 @@ unsigned char BL(int i,int j,int type){
         }
     case 7:
         {
-            return 0;
+            return sqrt(_sq(i*1.0)+_sq(j*1.0));
         }
     }
 }
