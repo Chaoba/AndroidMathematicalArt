@@ -33,142 +33,83 @@ uint32_t convertArgbToInt(ARGB argb)
     return (argb.alpha<< 24) | (argb.red ) | (argb.green << 8)
 	    | (argb.blue << 16);
     }
-unsigned char RD(int i,int j,int type);
-unsigned char GR(int i,int j,int type);
-unsigned char BL(int i,int j,int type);
-//FILE *fp;
+
 jobject createBitmap(JNIEnv * env,uint32_t* _storedBitmapPixels);
 
-unsigned char RD(int i,int j,int type){
-    switch(type){
-    case 0:
-        {
-            float s=3./(j+99);
-            return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
-        }
-    case 1:
-        {
-            float s=3./(j+99);
-            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM)*35)*s;
-            return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
-        }
-    case 2:
-        #define P 6.03
-        {
-            float s=3./(j+250),y=(j+sin((i*i+_sq(j-700)*5)/100./DIM+P)*15)*s;return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
-        }
-    case 3:
-        {
-            return _sq(sqrt(i*1.0)+sqrt(j*1.0));
-        }
-    case 4:
-        {
-             return j^j-i^i;
-        }
-    case 5:
-        {
-             return _sq((1024-i)*(1024-j)/1024)/1024*2;
-        }
-    case 6:
-        {
-            return (char)(_sq(cos(atan2(j-512.0,i-512.0)/2))*255);
-        }
-    case 7:
-        return sqrt(_sq(512.0-i)+_sq(512.0-j));
-    }
-}
-unsigned char GR(int i,int j,int type){
-    switch(type){
-    case 0:
-        {
-            float s=3./(j+99);
-            return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
-        }
-    case 1:
-        {
-            float s=3./(j+99);
-            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM)*35)*s;
-            return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
-        }
-    case 2:
-        {
-            float s=3./(j+250);
-            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM+P)*15)*s;
-            return (int(5*((i+DIM)*s+y))%2+int(5*((DIM*2-i)*s+y))%2)*127;
-        }
-    case 3:
-        {
-            return _sq(sqrt(512-i*1.0)+sqrt(512-j*1.0));
-        }
-    case 4:
-        {
-             return (i-DIM)^2+(j-DIM)^2;
-        }
-    case 5:
-        {
-             return _sq((512-i)*(521-j)/512)/512*2;
-        }
-    case 6:
-        {
-            return (char)(_sq(cos(atan2(j-512.0,i-512.0)/2.0-2*acos(-1.0)/3))*255);
-        }
-    case 7:
-        {
-           return sqrt(_sq(1024.0-i)+_sq(1024.0-j));
-        }
-    }
-}
-unsigned char BL(int i,int j,int type){
-    switch(type){
-    case 0:
-        {
-            float s=3./(j+99);
-            return (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
-        }
-    case 1:
-        {
-            float s=3./(j+99);
-            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM)*35)*s;
-            return (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
-        }
-    case 2:
-        {
-            float s=3./(j+250);
-            float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM+P)*15)*s;
-            return (int(29*((i+DIM)*s+y))%2+int(29*((DIM*2-i)*s+y))%2)*127;
-        }
-    case 3:
-        {
-           return _sq(sqrt(1024.0-i)+sqrt(1024.0-j));
-        }
-    case 4:
-        {
-            return i^i-j^j;
-        }
-    case 5:
-        {
-            return _sq(i*j/1024)/1024;
-        }
-    case 6:
-        {
-           return (char)(_sq(cos(atan2(j-512.0,i-512.0)/2.0+2*acos(-1.0)/3))*255);
-        }
-    case 7:
-        {
-            return sqrt(_sq(i*1.0)+_sq(j*1.0));
-        }
-    }
-}
+uint32_t create_pixel(int i, int j,int type){
+      unsigned char r,g,b;
+      switch(type){
+          case 0:
+              {
+                float s=3./(j+99);
+                r= (int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
+                g= r;//(int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
+                b= r;//(int((i+DIM)*s+j*s)%2+int((DIM*2-i)*s+j*s)%2)*127;
+                break;
+              }
+          case 1:
+              {
+                float s=3./(j+99);
+                float y=(j+sin((i*i+_sq(j-700)*5)/100./DIM)*35)*s;
+                r= (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+                g=r;// (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+                b=r;// (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+                break;
 
-uint32_t pixel_write(int i, int j,int type){
-//    static unsigned char color[3];
-    unsigned char r=RD(i,j,type);
-    unsigned char g=GR(i,j,type);
-    unsigned char b=BL(i,j,type);
-//    color[0] = r&255;
-//    color[1] = g&255;
-//    color[2] = b&255;
-//    fwrite(color, 1, 3, fp);
+              }
+          case 2:
+              #define P 6.03
+              {
+                float s=3./(j+250),y=(j+sin((i*i+_sq(j-700)*5)/100./DIM+P)*15)*s;
+                r= (int((i+DIM)*s+y)%2+int((DIM*2-i)*s+y)%2)*127;
+                g= (int(5*((i+DIM)*s+y))%2+int(5*((DIM*2-i)*s+y))%2)*127;
+                b= (int(29*((i+DIM)*s+y))%2+int(29*((DIM*2-i)*s+y))%2)*127;
+                break;
+              }
+          case 3:
+              {
+                r= _sq(sqrt(i*1.0)+sqrt(j*1.0));
+                g= _sq(sqrt(512-i*1.0)+sqrt(512-j*1.0));
+                b= _sq(sqrt(1024.0-i)+sqrt(1024.0-j));
+                break;
+              }
+          case 4:
+              {
+                r= j^j-i^i;
+                g= (i-DIM)^2+(j-DIM)^2;
+                b= i^i-j^j;
+                break;
+              }
+          case 5:
+              {
+                r= _sq((1024-i)*(1024-j)/1024)/1024*2;
+                g= _sq((512-i)*(521-j)/512)/512*2;
+                b= _sq(i*j/1024)/1024;
+                break;
+              }
+          case 6:
+              {
+                r= (char)(_sq(cos(atan2(j-512.0,i-512.0)/2))*255);
+                g= (char)(_sq(cos(atan2(j-512.0,i-512.0)/2.0-2*acos(-1.0)/3))*255);
+                b= (char)(_sq(cos(atan2(j-512.0,i-512.0)/2.0+2*acos(-1.0)/3))*255);
+                break;
+              }
+          case 7:
+              {
+                r= sqrt(_sq(512.0-i)+_sq(512.0-j));
+                g= sqrt(_sq(1024.0-i)+_sq(1024.0-j));
+                b= sqrt(_sq(i*1.0)+_sq(j*1.0));
+                break;
+              }
+          case 8:
+              {
+                r= sqrt(_sq((512.0-i)/2)+_sq((512.0-j)/2));
+                g= sqrt(_sq((1024.0-i)/4)+_sq((1024.0-j)/4));
+                b= sqrt(_sq(i*1.0/4)+_sq(j*1.0/4));
+                break;
+              }
+
+      }
     ARGB rgb={0xff,r,g,b};
     return convertArgbToInt(rgb);
 }
@@ -194,13 +135,10 @@ char* jstringTostring(JNIEnv* env, jstring jstr)
 JNIEXPORT jobject JNICALL Java_cn_chaobao_androidmathematicalart_MathematicalArt_jniGetMathematicalArt
   (JNIEnv * env, jclass cla, jstring path,jint type){
     uint32_t* newBitmapPixels = new uint32_t[DIM * DIM];
-//    fp = fopen(jstringTostring(env,path),"wb");
-//    fprintf(fp, "P6\n%d %d\n255\n", DIM, DIM);
     for(int j=0;j<DIM;j++)
         for(int i=0;i<DIM;i++){
-          newBitmapPixels[j*DIM+i]= pixel_write(i,j,type);
+             newBitmapPixels[j*DIM+i] = create_pixel(i,j,type);
           }
-//    fclose(fp);
 
     return createBitmap(env,newBitmapPixels);
   }

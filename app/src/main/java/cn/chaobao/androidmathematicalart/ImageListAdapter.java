@@ -76,6 +76,7 @@ public class ImageListAdapter extends BaseAdapter {
         if (bm != null) {
             Log.i(TAG, "has bitmap");
             holder.mImg.setImageBitmap(bm);
+            holder.mTxt.setText("load from cache");
         } else {
             holder.mImg.setImageResource(R.mipmap.ic_launcher);
             Observable observable = Observable.create(new Observable.OnSubscribe<Long>() {
