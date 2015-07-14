@@ -94,18 +94,68 @@ uint32_t create_pixel(int i, int j,int type){
                 b= (char)(_sq(cos(atan2(j-512.0,i-512.0)/2.0+2*acos(-1.0)/3))*255);
                 break;
               }
-          case 7:
+          case 7://small circle
               {
                 r= sqrt(_sq(512.0-i)+_sq(512.0-j));
                 g= sqrt(_sq(1024.0-i)+_sq(1024.0-j));
                 b= sqrt(_sq(i*1.0)+_sq(j*1.0));
                 break;
               }
-          case 8:
+          case 8://big circle
               {
                 r= sqrt(_sq((512.0-i)/2)+_sq((512.0-j)/2));
                 g= sqrt(_sq((1024.0-i)/4)+_sq((1024.0-j)/4));
                 b= sqrt(_sq(i*1.0/4)+_sq(j*1.0/4));
+                break;
+              }
+          case 9://hyperbola
+              {
+                int k=256;
+                r= abs(_sq((512.0-i))/k-_sq((512.0-j))/k);
+                g= abs(_sq((1024.0-i))/(k*2)-_sq((1024.0-j))/(k*2));
+                b= abs(_sq(i*1.0)/(k*2)-_sq(j*1.0)/(k*2));
+                break;
+              }
+          case 10://parabola
+              {
+                r= abs(_sq(512.0-i))/abs((512.0-j));
+                g= abs(_sq(512.0-j))/abs((512.0-i));
+                b= abs(_sq(512.0-i))/abs((1024-j));
+                break;
+              }
+          case 11:
+              {
+                r=sin((512.0-i)/(512.0-j))*255;
+                g=sin((512.0-j)/(512.0-i))*255;
+                b=cos((512.0-i)/(512.0-j))*255;
+                break;
+              }
+          case 12:
+              {
+                r=cos((512.0-i)/(512.0-j))*255;
+                g=cos((512.0-j)/(512.0-i))*255;
+                b=sin((512.0-i)/(512.0-j))*255;
+                break;
+              }
+          case 13:
+              {
+               r=acos((512.0-i)/(512.0-j))*255;
+               g=acos((512.0-j)/(512.0-i))*255;
+               b=asin((512.0-i)/(512.0-j))*255;
+                break;
+              }
+          case 14:
+              {
+               r=asin((512.0-i)/(512.0-j))*255;
+               g=asin((512.0-j)/(512.0-i))*255;
+               b=acos((512.0-i)/(512.0-j))*255;
+                break;
+              }
+          case 15:
+              {
+              r= sqrt(_sq((512.0-i))+_sq((512.0-j)));
+              g= 10240/sqrt(_sq((512.0-i)/2)+_sq((512.0-j)/2));
+              b= sqrt(_sq(r*1.0)+_sq(g));
                 break;
               }
 
