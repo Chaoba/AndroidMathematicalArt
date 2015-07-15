@@ -158,6 +158,13 @@ uint32_t create_pixel(int i, int j,int type){
               b= sqrt(_sq(r*1.0)+_sq(g));
                 break;
               }
+          case 16:
+              {
+              r=1024* atan2(abs(j-512.0),abs(i-512.0));
+              g=512* atan2(abs(j-512.0),abs(i-512.0));
+              b=256* atan2(abs(j-512.0),abs(i-512.0));
+                break;
+              }
 
       }
     ARGB rgb={0xff,r,g,b};
